@@ -7,8 +7,8 @@ import {
 } from '@/app/components/ui/card';
 
 import { Todo } from '@prisma/client';
-
 import useSWR from 'swr';
+import DeleteTodo from './Deletetodo';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -35,20 +35,19 @@ export default function Todolist() {
   const todoList = todos || [];
 
   return (
-    <div>
+    <div className='space-y-3'>
       {todoList.length === 0 ? (
-        <Card>
-          <CardContent>
-            <p className='text-muted-foreground'>All done for today</p>
-          </CardContent>
-        </Card>
+        <p className='text-muted-foreground'>All done for today</p>
       ) : (
         todoList.map((todo) => (
           <Card
             key={todo.id}
-            className='relative flex w-full items-center rounded border border-zinc-700 bg-zinc-900 text-white'
+            className='group relative flex flex-col w-96 items-baseline rounded border border-zinc-700 bg-zinc-900 text-white'
           >
-            <CardHeader className='h-3 flex items-center justify-center '>
+            <div className='absolute top-2 right-2'>
+              <DeleteTodo id={todo.id} />
+            </div>
+            <CardHeader className='h-3 flex items-center justify-center'>
               <CardTitle>
                 <span className={todo.isCompleted ? 'line-through' : ''}>
                   {todo.title}
@@ -57,7 +56,7 @@ export default function Todolist() {
             </CardHeader>
             {todo.description && (
               <CardContent>
-                <p>{todo.description}</p>
+                <p className='text-xs'>{todo.description}</p>
               </CardContent>
             )}
           </Card>

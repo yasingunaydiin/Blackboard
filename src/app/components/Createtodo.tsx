@@ -9,23 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/app/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/app/components/ui/form';
 import { todoSchema, type TodoSchema } from '@/lib/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { mutate } from 'swr';
+import TodoForm from './Todoform';
 import { Button } from './ui/button';
-import { Checkbox } from './ui/checkbox';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
 
 export default function CreateTodo() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,70 +74,16 @@ export default function CreateTodo() {
           {errorMessage && (
             <div className='text-red-500 text-sm mb-4'>{errorMessage}</div>
           )}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-              <FormField
-                control={form.control}
-                name='title'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input placeholder='What do you need to do?' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder='Give some detail
-                        '
-                        className='resize-none'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='isCompleted'
-                render={({ field }) => (
-                  <FormItem className='flex flex-row items-start space-x-3 space-y-0'>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className='space-y-1 leading-none'>
-                      <FormLabel>Mark as completed</FormLabel>
-                    </div>
-                  </FormItem>
-                )}
-              />
-              <Button
-                className='w-full rounded bg-indigo-600 text-indigo-50 transition-colors hover:bg-indigo-500'
-                type='submit'
-                disabled={isSubmitting}
-              >
-                {isSubmitting && (
-                  <div className='absolute inset-0 flex items-center justify-center bg-primary/50 rounded-md'>
-                    <div className='w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
-                  </div>
-                )}
-                Submit
-              </Button>
-            </form>
-          </Form>
+          <TodoForm
+            defaultValues={{
+              title: '',
+              description: '',
+              isCompleted: false,
+            }}
+            onSubmit={onSubmit}
+            submitButtonText='Submit'
+            isSubmitting={isSubmitting}
+          />
         </DialogContent>
       </Dialog>
     </div>
