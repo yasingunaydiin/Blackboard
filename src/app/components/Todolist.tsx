@@ -42,12 +42,12 @@ export default function Todolist() {
             key={todo.id}
             className='group relative flex w-96 max-w-md items-center rounded-lg border border-zinc-700/50 bg-zinc-900/70 text-white backdrop-blur-sm transition-all hover:bg-zinc-800/70 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]'
           >
-            {/* <div className='m-3 flex justify-center'>
+            <div className='m-3 flex justify-center'>
               <input
                 type='checkbox'
                 className='size-4 accent-orange-500 appearance-auto rounded-md border'
               />
-            </div> */}
+            </div>
             <div className='absolute right-2 flex space-x-1 opacity-0 transition-opacity group-hover:opacity-100'>
               <UpdateTodo todo={todo} />
               <DeleteTodo id={todo.id} />
