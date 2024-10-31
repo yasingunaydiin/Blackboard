@@ -37,7 +37,6 @@ export async function POST(request: NextRequest) {
     const newTodo = await prisma.todo.create({
       data: {
         title: todoData.title,
-        description: todoData.description,
         isCompleted: todoData.isCompleted,
       },
     });
@@ -113,7 +112,6 @@ export async function PUT(request: NextRequest) {
       where: { id },
       data: {
         title: todoData.title,
-        description: todoData.description,
         isCompleted: todoData.isCompleted,
       },
     });
