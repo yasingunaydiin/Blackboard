@@ -24,7 +24,7 @@ export default function DeleteTodo({ id }: { id: string }) {
       size='icon'
       className='mr-1 text-red-500 bg-red-100 size-6 flex items-center justify-center'
     >
-      <TrashIcon className='h-4 w-4' />
+      <TrashIcon />
     </Button>
   );
 }

@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'focusList',
-  description: 'focusList by Yasin Gunaydin',
+  title: 'actionsList',
+  description: 'actionsList by Yasin Gunaydin',
 };
 
 export default function RootLayout({

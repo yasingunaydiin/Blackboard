@@ -26,7 +26,6 @@ export default function CreateTodo() {
     resolver: zodResolver(todoSchema),
     defaultValues: {
       title: '',
-      description: '',
       isCompleted: false,
     },
   });
@@ -69,7 +68,7 @@ export default function CreateTodo() {
         </DialogTrigger>
         <DialogContent className='sm:max-w-[425px] bg-white'>
           <DialogHeader>
-            <DialogTitle>Create New Todo</DialogTitle>
+            <DialogTitle>Create a new action</DialogTitle>
           </DialogHeader>
           {errorMessage && (
             <div className='text-red-500 text-sm mb-4'>{errorMessage}</div>
@@ -77,7 +76,6 @@ export default function CreateTodo() {
           <TodoForm
             defaultValues={{
               title: '',
-              description: '',
               isCompleted: false,
             }}
             onSubmit={onSubmit}

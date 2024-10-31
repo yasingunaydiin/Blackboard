@@ -13,9 +13,7 @@ import {
   FormMessage,
 } from '@/app/components/ui/form';
 import { Input } from '@/app/components/ui/input';
-import { Textarea } from '@/app/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-
 import { todoSchema, type TodoSchema } from '@/lib/zod';
 
 interface TodoFormProps {
@@ -54,24 +52,6 @@ export default function TodoForm({
         />
         <FormField
           control={form.control}
-          name='description'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder='Give some detail
-                        '
-                  className='resize-none'
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name='isCompleted'
           render={({ field }) => (
             <FormItem className='flex flex-row items-start space-x-3 space-y-0'>
@@ -87,6 +67,7 @@ export default function TodoForm({
             </FormItem>
           )}
         />
+
         <Button
           className='w-full rounded bg-indigo-600 text-indigo-50 transition-colors hover:bg-indigo-500'
           type='submit'
