@@ -43,12 +43,17 @@ export default function UpdateTodo({ todo }: { todo: Todo }) {
       mutate('/api/todos');
     } catch (error) {
       console.error('Error updating todo:', error);
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unexpected error occurred';
+      setErrorMessage(errorMessage);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-      <DialogTrigger asChild className=''>
+      <DialogTrigger asChild>
         <Button
           variant='ghost'
           size='icon'

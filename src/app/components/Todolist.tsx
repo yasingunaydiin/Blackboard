@@ -8,7 +8,7 @@ import UpdateTodo from './Updatetodo';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export default function Todolist() {
+export default function TodoList() {
   const {
     data: todos,
     error,
@@ -17,15 +17,14 @@ export default function Todolist() {
 
   if (isLoading)
     return (
-      <div>
-        <div className='flex justify-center items-center'>
-          <div className='relative w-12 h-12'>
-            <div className='absolute w-12 h-12 rounded-full border-4 border-indigo-500 opacity-20'></div>
-            <div className='absolute w-12 h-12 animate-spin rounded-full border-4 border-t-indigo-500'></div>
-          </div>
+      <div className='flex justify-center items-center'>
+        <div className='relative w-12 h-12'>
+          <div className='absolute w-12 h-12 rounded-full border-4 border-indigo-500 opacity-20'></div>
+          <div className='absolute w-12 h-12 animate-spin rounded-full border-4 border-t-indigo-500'></div>
         </div>
       </div>
     );
+
   if (error) return <div>Failed to load todos.</div>;
 
   const todoList = todos || [];
@@ -33,9 +32,11 @@ export default function Todolist() {
   return (
     <div className='space-y-3'>
       {todoList.length === 0 ? (
-        <p className='text-center text-lg text-zinc-500'>
-          All tasks completed! Enjoy your day. ✨
-        </p>
+        <div>
+          <p className='text-center text-lg text-zinc-500'>
+            All tasks completed! Enjoy your day. ✨
+          </p>
+        </div>
       ) : (
         todoList.map((todo) => (
           <Card
