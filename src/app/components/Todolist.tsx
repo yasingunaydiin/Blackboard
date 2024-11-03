@@ -6,22 +6,29 @@ import useSWR from 'swr';
 import DeleteTodo from './Deletetodo';
 import UpdateTodo from './Updatetodo';
 
+const EmptyState = () => (
+  <div className='space-y-3'>
+    <div>
+      <p className='text-center text-lg text-zinc-500'>
+        All tasks completed! Enjoy your day. ✨
+      </p>
+    </div>
+  </div>
+);
+
 const fetcher = async (url: string) => {
   const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error('Failed to fetch todos');
-  }
-  return res.json();
+  if (!res.ok) return null;
+  const data = await res.json();
+  return Array.isArray(data) ? data : null;
 };
 
 export default function TodoList() {
-  const {
-    data: todos,
-    error,
-    isLoading,
-  } = useSWR<Todo[]>('/api/todos', fetcher);
+  const { data: todos, isLoading } = useSWR<Todo[] | null>(
+    '/api/todos',
+    fetcher
+  );
 
-  // Loading state
   if (isLoading) {
     return (
       <div className='flex justify-center items-center'>
@@ -33,66 +40,39 @@ export default function TodoList() {
     );
   }
 
-  // Error state
-  if (error) {
-    return (
-      <div className='text-red-500 text-center'>
-        Error loading todos: {error.message}
-      </div>
-    );
+  // If there's no valid data, show empty state
+  if (!todos || !Array.isArray(todos) || todos.length === 0) {
+    return <EmptyState />;
   }
 
-  // Make sure todos is an array
-  const todoList = Array.isArray(todos) ? todos : [];
-  console.log('Todos received:', todos); // Debug log
-
-  // Empty state
-  if (todoList.length === 0) {
-    return (
-      <div>
-        <p className='text-center text-lg text-zinc-500'>
-          All tasks completed! Enjoy your day. ✨
-        </p>
-      </div>
-    );
-  }
-
-  // Render todos
   return (
     <div className='space-y-3'>
-      {todoList.map((todo) => {
-        if (!todo || typeof todo !== 'object') {
-          console.error('Invalid todo item:', todo);
-          return null;
-        }
-
-        return (
-          <Card
-            key={todo.id}
-            className='group relative flex w-96 max-w-md items-center rounded-lg border border-zinc-700/50 bg-zinc-900/70 text-white backdrop-blur-sm transition-all hover:bg-zinc-800/70 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]'
-          >
-            <div className='m-3 flex justify-center'>
-              <input
-                type='checkbox'
-                checked={todo.isCompleted}
-                className='size-4 accent-orange-500 appearance-auto rounded-md border'
-                onChange={() => {}} // Add your checkbox handler here
-              />
-            </div>
-            <div className='absolute right-2 flex space-x-1 opacity-0 transition-opacity group-hover:opacity-100'>
-              <UpdateTodo todo={todo} />
-              <DeleteTodo id={todo.id} />
-            </div>
-            <CardHeader className='h-3 flex items-center justify-center'>
-              <CardTitle>
-                <span className={todo.isCompleted ? 'line-through' : ''}>
-                  {todo.title}
-                </span>
-              </CardTitle>
-            </CardHeader>
-          </Card>
-        );
-      })}
+      {todos.map((todo) => (
+        <Card
+          key={todo.id}
+          className='group relative flex w-96 max-w-md items-center rounded-lg border border-zinc-700/50 bg-zinc-900/70 text-white backdrop-blur-sm transition-all hover:bg-zinc-800/70 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]'
+        >
+          <div className='m-3 flex justify-center'>
+            <input
+              type='checkbox'
+              className='size-4 accent-orange-500 appearance-auto rounded-md border'
+              checked={todo.isCompleted}
+              onChange={() => {}}
+            />
+          </div>
+          <div className='absolute right-2 flex space-x-1 opacity-0 transition-opacity group-hover:opacity-100'>
+            <UpdateTodo todo={todo} />
+            <DeleteTodo id={todo.id} />
+          </div>
+          <CardHeader className='h-3 flex items-center justify-center'>
+            <CardTitle>
+              <span className={todo.isCompleted ? 'line-through' : ''}>
+                {todo.title}
+              </span>
+            </CardTitle>
+          </CardHeader>
+        </Card>
+      ))}
     </div>
   );
 }
