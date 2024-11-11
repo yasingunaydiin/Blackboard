@@ -1,4 +1,4 @@
-<img width="128px" src="public/RegExorcist_mac.png" alt="Logo" align="left" />
+<img width="128px" src="public/actionslist_logo.png" alt="Logo" align="left" />
 
 # actionsList 
 A simple and minimal CRUD to-do list created with Next.js, Zod, Shadcn, Prisma, Mongodb and SWR to show off my UI/UX skills.
