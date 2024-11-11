@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+import { Button } from '@/app/components/ui/button';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import {
   Form,
@@ -13,7 +14,6 @@ import {
   FormMessage,
 } from '@/app/components/ui/form';
 import { Input } from '@/app/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { todoSchema, type TodoSchema } from '@/lib/zod';
 
 interface TodoFormProps {
