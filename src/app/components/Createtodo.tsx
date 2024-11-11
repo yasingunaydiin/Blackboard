@@ -1,5 +1,3 @@
-'use client';
-
 import { FiPlus } from 'react-icons/fi';
 
 import {
