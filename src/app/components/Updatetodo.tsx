@@ -22,6 +22,7 @@ export default function UpdateTodo({ todo }: { todo: Todo }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isDialogOpen, setDialogOpen] = useState(false);
 
+  // Without error statements
   const onSubmit = async (data: TodoSchema) => {
     setIsSubmitting(true);
 
@@ -41,15 +42,39 @@ export default function UpdateTodo({ todo }: { todo: Todo }) {
       setErrorMessage('');
       setDialogOpen(false);
       mutate('/api/todos');
-    } catch (error) {
-      console.error('Error updating todo:', error);
-      const errorMessage =
-        error instanceof Error ? error.message : 'An unexpected error occurred';
-      setErrorMessage(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // const onSubmit = async (data: TodoSchema) => {
+  //   setIsSubmitting(true);
+
+  //   try {
+  //     const response = await fetch('/api/todos', {
+  //       method: 'PUT',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ ...data, id: todo.id }),
+  //     });
+
+  //     const responseData = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(responseData.message || 'Failed to update todo');
+  //     }
+
+  //     setErrorMessage('');
+  //     setDialogOpen(false);
+  //     mutate('/api/todos');
+  //   } catch (error) {
+  //     console.error('Error updating todo:', error);
+  //     const errorMessage =
+  //       error instanceof Error ? error.message : 'An unexpected error occurred';
+  //     setErrorMessage(errorMessage);
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>

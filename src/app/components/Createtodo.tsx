@@ -30,6 +30,7 @@ export default function CreateTodo() {
     },
   });
 
+  // Code without error statements.
   const onSubmit = async (data: TodoSchema) => {
     setIsSubmitting(true);
     try {
@@ -48,15 +49,39 @@ export default function CreateTodo() {
       setDialogOpen(false);
       mutate('/api/todos');
       setErrorMessage('');
-    } catch (error) {
-      console.error('Error creating todo:', error);
-      const errorMessage =
-        error instanceof Error ? error.message : 'An unexpected error occurred';
-      setErrorMessage(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Old code, works.
+  // const onSubmit = async (data: TodoSchema) => {
+  //   setIsSubmitting(true);
+  //   try {
+  //     const response = await fetch('/api/todos', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(data),
+  //     });
+
+  //     const responseData = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(responseData.message || 'Failed to create todo');
+  //     }
+  //     form.reset();
+  //     setDialogOpen(false);
+  //     mutate('/api/todos');
+  //     setErrorMessage('');
+  //   } catch (error) {
+  //     console.error('Error creating todo:', error);
+  //     const errorMessage =
+  //       error instanceof Error ? error.message : 'An unexpected error occurred';
+  //     setErrorMessage(errorMessage);
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
 
   return (
     <div className='fixed bottom-6 left-1/2 w-full max-w-xl -translate-x-1/2 px-4'>
