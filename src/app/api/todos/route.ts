@@ -5,11 +5,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
   try {
+    console.log('Fetching todos...');
     const todos = await prisma.todo.findMany({
       orderBy: {
         createdAt: 'desc',
       },
     });
+    console.log('Todos fetched:', todos);
     return NextResponse.json(todos);
   } catch (error) {
     console.error('Error fetching todos:', error);
@@ -23,6 +25,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log('Received POST request with body:', body);
     const result = todoSchema.safeParse(body);
 
     if (!result.success) {
@@ -54,6 +57,7 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const id = request.nextUrl.searchParams.get('id');
+    console.log('Received DELETE request with id:', id);
 
     if (!id) {
       return NextResponse.json(
@@ -86,6 +90,7 @@ export async function DELETE(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log('Received PUT request with body:', body);
     const { id, ...rest } = body;
     const result = todoSchema.safeParse(rest);
 
