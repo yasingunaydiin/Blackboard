@@ -1,12 +1,14 @@
-'use client';
-
 import { Card, CardHeader, CardTitle } from '@/app/components/ui/card';
-import { useEffect, useState } from 'react';
-
 import { Todo } from '@prisma/client';
+import { useEffect } from 'react';
 import CreateTodo from './Createtodo';
 import DeleteTodo from './Deletetodo';
 import UpdateTodo from './Updatetodo';
+
+interface TodoListProps {
+  todos: Todo[] | null;
+  setTodos: React.Dispatch<React.SetStateAction<Todo[] | null>>;
+}
 
 const EmptyState = () => (
   <div className='space-y-3'>
@@ -18,15 +20,14 @@ const EmptyState = () => (
   </div>
 );
 
-export default function TodoList() {
-  const [todos, setTodos] = useState<Todo[] | null>(null);
-
+export default function TodoList({ todos, setTodos }: TodoListProps) {
+  // Make sure to load todos from localStorage when the component mounts
   useEffect(() => {
     const storedTodos = localStorage.getItem('todos');
     if (storedTodos) {
-      setTodos(JSON.parse(storedTodos));
+      setTodos(JSON.parse(storedTodos)); // Load from localStorage
     }
-  }, []);
+  }, [setTodos]); // Ensure useEffect is only called once on mount
 
   const toggleComplete = (id: string) => {
     if (todos) {
@@ -35,7 +36,7 @@ export default function TodoList() {
       );
 
       setTodos(updatedTodos);
-      localStorage.setItem('todos', JSON.stringify(updatedTodos));
+      localStorage.setItem('todos', JSON.stringify(updatedTodos)); // Update localStorage
     }
   };
 

@@ -1,8 +1,13 @@
+'use client';
+import { Todo } from '@prisma/client';
 import Image from 'next/image';
-import Createtodo from './components/Createtodo';
-import Todolist from './components/Todolist';
+import { useState } from 'react';
+import CreateTodo from './components/Createtodo';
+import TodoList from './components/Todolist';
 
 export default function Home() {
+  const [todos, setTodos] = useState<Todo[] | null>(null);
+
   return (
     <div
       className='flex items-center justify-center h-screen bg-zinc-950 relative'
@@ -32,9 +37,9 @@ export default function Home() {
       <div className='mb-6 w-full flex flex-col items-center text-white'>
         <h1 className='text-xl font-medium'>Good morning! ☀️</h1>
         <p className='text-zinc-400'>Let`s see what we`ve got to do today.</p>
-        <Createtodo />
+        <CreateTodo setTodos={setTodos} />
         <div className='mt-5'>
-          <Todolist />
+          <TodoList todos={todos} setTodos={setTodos} />
         </div>
       </div>
     </div>
