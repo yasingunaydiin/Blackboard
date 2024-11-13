@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/app/components/ui/button';
-import { Checkbox } from '@/app/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -47,23 +46,6 @@ export default function TodoForm({
                 <Input placeholder='What do you need to do?' {...field} />
               </FormControl>
               <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='isCompleted'
-          render={({ field }) => (
-            <FormItem className='flex flex-row items-start space-x-3 space-y-0'>
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className='space-y-1 leading-none'>
-                <FormLabel>Mark as completed</FormLabel>
-              </div>
             </FormItem>
           )}
         />

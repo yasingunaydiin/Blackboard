@@ -1,30 +1,35 @@
 'use client';
 
-import { Button } from '@/app/components/ui/button';
+import { Todo } from '@prisma/client';
 import { TrashIcon } from '@radix-ui/react-icons';
-import { mutate } from 'swr';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function DeleteTodo({ id }: { id: string }) {
-  const handleDelete = async () => {
-    const response = await fetch(`/api/todos?id=${id}`, {
-      method: 'DELETE',
-    });
-    if (response.ok) {
-      console.log('Todo deleted successfully');
-      mutate('/api/todos');
-    } else {
-      console.error('Failed to delete todo');
-    }
+interface DeleteTodoProps {
+  id: string;
+  setTodos: Dispatch<SetStateAction<Todo[] | null>>;
+}
+
+export default function DeleteTodo({ id, setTodos }: DeleteTodoProps) {
+  const onDelete = () => {
+    // Get todos from localStorage
+    const storedTodos = JSON.parse(localStorage.getItem('todos') || '[]');
+
+    // Filter out the deleted todo
+    const updatedTodos = storedTodos.filter((todo: Todo) => todo.id !== id);
+
+    // Save the updated todos back to localStorage
+    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+
+    // Update the state
+    setTodos(updatedTodos); // Directly update the state
   };
 
   return (
-    <Button
-      onClick={handleDelete}
-      variant='ghost'
-      size='icon'
+    <button
+      onClick={onDelete}
       className='mr-1 text-red-500 bg-red-100 size-6 flex items-center justify-center'
     >
       <TrashIcon />
-    </Button>
+    </button>
   );
 }

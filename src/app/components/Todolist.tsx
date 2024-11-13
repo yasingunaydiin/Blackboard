@@ -1,8 +1,10 @@
 'use client';
 
 import { Card, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { useEffect, useState } from 'react';
+
 import { Todo } from '@prisma/client';
-import useSWR from 'swr';
+import CreateTodo from './Createtodo';
 import DeleteTodo from './Deletetodo';
 import UpdateTodo from './Updatetodo';
 
@@ -16,32 +18,28 @@ const EmptyState = () => (
   </div>
 );
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) return null;
-  const data = await res.json();
-  return Array.isArray(data) ? data : null;
-};
-
 export default function TodoList() {
-  const { data: todos, isLoading } = useSWR<Todo[] | null>(
-    '/api/todos',
-    fetcher
-  );
+  const [todos, setTodos] = useState<Todo[] | null>(null);
 
-  if (isLoading) {
-    return (
-      <div className='flex justify-center items-center'>
-        <div className='relative w-12 h-12'>
-          <div className='absolute w-12 h-12 rounded-full border-4 border-indigo-500 opacity-20'></div>
-          <div className='absolute w-12 h-12 animate-spin rounded-full border-4 border-t-indigo-500'></div>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const storedTodos = localStorage.getItem('todos');
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
+  }, []);
 
-  // If there's no valid data, show empty state
-  if (!todos || !Array.isArray(todos) || todos.length === 0) {
+  const toggleComplete = (id: string) => {
+    if (todos) {
+      const updatedTodos = todos.map((todo) =>
+        todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+      );
+
+      setTodos(updatedTodos);
+      localStorage.setItem('todos', JSON.stringify(updatedTodos));
+    }
+  };
+
+  if (!todos || todos.length === 0) {
     return <EmptyState />;
   }
 
@@ -57,12 +55,12 @@ export default function TodoList() {
               type='checkbox'
               className='size-4 accent-orange-500 appearance-auto rounded-md border'
               checked={todo.isCompleted}
-              onChange={() => {}}
+              onChange={() => toggleComplete(todo.id)}
             />
           </div>
           <div className='absolute right-2 flex space-x-1 opacity-0 transition-opacity group-hover:opacity-100'>
-            <UpdateTodo todo={todo} />
-            <DeleteTodo id={todo.id} />
+            <UpdateTodo todo={todo} setTodos={setTodos} />
+            <DeleteTodo id={todo.id} setTodos={setTodos} />
           </div>
           <CardHeader className='h-3 flex items-center justify-center'>
             <CardTitle>
@@ -73,6 +71,7 @@ export default function TodoList() {
           </CardHeader>
         </Card>
       ))}
+      <CreateTodo setTodos={setTodos} />
     </div>
   );
 }

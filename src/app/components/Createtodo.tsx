@@ -1,7 +1,5 @@
 'use client';
 
-import { FiPlus } from 'react-icons/fi';
-
 import {
   Dialog,
   DialogContent,
@@ -9,44 +7,42 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/app/components/ui/dialog';
-import { todoSchema, type TodoSchema } from '@/lib/zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { type TodoSchema } from '@/lib/zod';
+import { Todo } from '@prisma/client';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { mutate } from 'swr';
+import { FiPlus } from 'react-icons/fi';
 import TodoForm from './Todoform';
 import { Button } from './ui/button';
 
-export default function CreateTodo() {
+interface CreateTodoProps {
+  setTodos: React.Dispatch<React.SetStateAction<Todo[] | null>>;
+}
+
+export default function CreateTodo({ setTodos }: CreateTodoProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const form = useForm<TodoSchema>({
-    resolver: zodResolver(todoSchema),
-    defaultValues: {
-      title: '',
-      isCompleted: false,
-    },
-  });
-
   const onSubmit = async (data: TodoSchema) => {
     setIsSubmitting(true);
+
     try {
-      const response = await fetch('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      const newTodo = {
+        id: Date.now(),
+        title: data.title,
+        isCompleted: data.isCompleted,
+      };
 
-      const responseData = await response.json();
+      const storedTodos = JSON.parse(localStorage.getItem('todos') || '[]');
+      storedTodos.push(newTodo);
 
-      if (!response.ok) {
-        throw new Error(responseData.message || 'Failed to create todo');
-      }
-      form.reset();
+      localStorage.setItem('todos', JSON.stringify(storedTodos));
+      setTodos(storedTodos); // Update state in the parent component
+
+      // Close the dialog after successful submission
       setDialogOpen(false);
-      mutate('/api/todos');
+
+      // Error messages
       setErrorMessage('');
     } catch (error) {
       console.error('Error creating todo:', error);

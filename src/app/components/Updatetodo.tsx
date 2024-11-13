@@ -1,8 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { mutate } from 'swr';
-
+import TodoForm from '@/app/components/Todoform';
 import { Button } from '@/app/components/ui/button';
 import {
   Dialog,
@@ -11,13 +9,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/app/components/ui/dialog';
-
-import TodoForm from '@/app/components/Todoform';
 import { type TodoSchema } from '@/lib/zod';
 import { Todo } from '@prisma/client';
 import { Pencil1Icon } from '@radix-ui/react-icons';
+import { useState } from 'react';
 
-export default function UpdateTodo({ todo }: { todo: Todo }) {
+interface UpdateTodoProps {
+  todo: Todo;
+  setTodos: React.Dispatch<React.SetStateAction<Todo[] | null>>;
+}
+
+export default function UpdateTodo({ todo, setTodos }: UpdateTodoProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -26,21 +28,23 @@ export default function UpdateTodo({ todo }: { todo: Todo }) {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/todos', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, id: todo.id }),
-      });
+      // Get existing todos from localStorage
+      const storedTodos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-      const responseData = await response.json();
+      // Update only the specific todo in the list
+      const updatedTodos = storedTodos.map((item: { id: unknown }) =>
+        item.id === todo.id ? { ...item, ...data } : item
+      );
 
-      if (!response.ok) {
-        throw new Error(responseData.message || 'Failed to update todo');
-      }
+      // Save the updated todos to localStorage
+      localStorage.setItem('todos', JSON.stringify(updatedTodos));
 
+      // Sync the todos with the state
+      setTodos(updatedTodos); // Directly update the state
+
+      setIsSubmitting(false);
       setErrorMessage('');
       setDialogOpen(false);
-      mutate('/api/todos');
     } catch (error) {
       console.error('Error updating todo:', error);
       const errorMessage =
