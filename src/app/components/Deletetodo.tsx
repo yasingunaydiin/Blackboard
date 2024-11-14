@@ -27,7 +27,7 @@ export default function DeleteTodo({ id, setTodos }: DeleteTodoProps) {
   return (
     <button
       onClick={onDelete}
-      className='mr-1 text-red-500 bg-red-100 size-6 flex items-center justify-center'
+      className='hover:text-yellow-700 rounded-md hover:bg-red-200 mr-1 text-red-500 bg-red-100 size-6 flex items-center justify-center'
     >
       <TrashIcon />
     </button>
