@@ -20,6 +20,25 @@ const EmptyState = () => (
   </div>
 );
 
+const renderTodoTitle = (title: string) => {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return title.split(urlRegex).map((part, index) =>
+    part.match(urlRegex) ? (
+      <a
+        key={index}
+        href={part}
+        target='_blank'
+        rel='noopener noreferrer'
+        className='text-blue-500 underline'
+      >
+        {part}
+      </a>
+    ) : (
+      part
+    )
+  );
+};
+
 export default function TodoList({ todos, setTodos }: TodoListProps) {
   // Make sure to load todos from localStorage when the component mounts
   useEffect(() => {
@@ -65,9 +84,13 @@ export default function TodoList({ todos, setTodos }: TodoListProps) {
           </div>
           <CardHeader className='h-3 flex items-center justify-center'>
             <CardTitle>
-              <span className={todo.isCompleted ? 'line-through' : ''}>
-                {todo.title}
-              </span>
+              {todo.isCompleted ? (
+                <span className='line-through'>
+                  {renderTodoTitle(todo.title)}
+                </span>
+              ) : (
+                renderTodoTitle(todo.title)
+              )}
             </CardTitle>
           </CardHeader>
         </Card>
