@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Darkboard',
-  description: 'Darkboard by Yasin Gunaydin',
+  title: 'Blackboard',
+  description: 'Blackboard by Yasin Gunaydin',
 };
 
 export default function RootLayout({

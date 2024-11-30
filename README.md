@@ -1,6 +1,6 @@
-<img width="128px" src="public/darkboard_logo.png" alt="Logo" align="left" />
+<img width="128px" src="public/blackboard_logo.png" alt="Logo" align="left" />
 
-# Darkboard
+# Blackboard
 
 A simple and minimal CRUD to-do list created with Next.js, Zod, Shadcn, Prisma, Mongodb and SWR.
 
