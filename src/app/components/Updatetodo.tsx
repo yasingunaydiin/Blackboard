@@ -68,7 +68,7 @@ export default function UpdateTodo({ todo, setTodos }: UpdateTodoProps) {
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px] bg-white'>
         <DialogHeader>
-          <DialogTitle>Edit this action</DialogTitle>
+          <DialogTitle>Edit this entry</DialogTitle>
         </DialogHeader>
         {errorMessage && (
           <div className='text-red-500 text-sm mb-4'>{errorMessage}</div>

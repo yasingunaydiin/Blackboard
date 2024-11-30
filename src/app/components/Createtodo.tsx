@@ -64,7 +64,7 @@ export default function CreateTodo({ setTodos }: CreateTodoProps) {
         </DialogTrigger>
         <DialogContent className='sm:max-w-[425px] bg-white'>
           <DialogHeader>
-            <DialogTitle>Create a new action</DialogTitle>
+            <DialogTitle>Create a new entry</DialogTitle>
           </DialogHeader>
           {errorMessage && (
             <div className='text-red-500 text-sm mb-4'>{errorMessage}</div>

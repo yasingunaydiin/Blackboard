@@ -33,7 +33,7 @@ export default function Home() {
           </a>
           <a href='https://yasingunaydiin-portfolio.vercel.app'>
             <Image
-              src='/actionslist_logo.png'
+              src='/darkboard_logo.png'
               alt='Portfolio'
               width={40}
               height={20}
