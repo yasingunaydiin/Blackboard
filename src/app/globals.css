@@ -27,7 +27,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -53,7 +53,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
   }
 }
 @layer base {
@@ -63,4 +63,54 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Default (Light mode) styles */
+:root {
+  --bg-color: #ffffff;
+  --card-bg: #f7fafc;
+  --text-color: #2d3748;
+  --primary-color: #3182ce;
+  --secondary-color: #38a169;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Default (Light mode) styles */
+:root {
+  --bg-color: #ffffff;
+  --card-bg: #f7fafc;
+  --text-color: #2d3748;
+  --primary-color: #3182ce;
+  --secondary-color: #38a169;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode overrides */
+.dark-mode {
+  --bg-color: #1a202c;
+  --card-bg: #2d3748;
+  --text-color: #e2e8f0;
+  --primary-color: #4299e1;
+  --secondary-color: #48bb78;
+  --shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+/* Apply custom properties */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.card {
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+button:hover {
+  background-color: var(--secondary-color);
 }
